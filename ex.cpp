@@ -1,72 +1,60 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-
+#include <bits/stdc++.h>
 using namespace std;
-
-class Graph {
-private:
-    int vertices;
-    vector<vector<int>> adjList;
-
-public:
-    Graph(int V) {
-        vertices = V;
-        adjList.resize(V);
+#define ll long long
+const ll INF = numeric_limits<ll>::max();
+const int N = 100006;
+int main()
+{
+    int n, e;
+    cin >> n >> e;
+    ll dis[n + 1][n + 1];
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            dis[i][j] = INF;
+            if (i == j)
+                dis[i][j] = 0;
+        }
     }
-
-    void addEdge(int u, int v) {
-        adjList[u].push_back(v);
-        adjList[v].push_back(u);
+    while (e--)
+    {
+        int a, b;
+        ll w;
+        cin >> a >> b >> w;
+        dis[a][b] = w;
     }
-
-    int bfs(int source, int destination) {
-        vector<bool> visited(vertices, false);
-        vector<int> distance(vertices, -1);
-
-        queue<int> q;
-        q.push(source);
-        visited[source] = true;
-        distance[source] = 0;
-
-        while (!q.empty()) {
-            int u = q.front();
-            q.pop();
-
-            for (int v : adjList[u]) {
-                if (!visited[v]) {
-                    q.push(v);
-                    visited[v] = true;
-                    distance[v] = distance[u] + 1;
+    for (int k = 1; k <= n; k++)
+    {
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                if (dis[i][k] + dis[k][j] < dis[i][j])
+                {
+                    dis[i][j] = dis[i][k] + dis[k][j];
                 }
             }
         }
-
-        return distance[destination];
     }
-};
-
-int main() {
-    int n, m; // Number of vertices and edges
-    cin >> n >> m;
-
-    Graph graph(n);
-
-    for (int i = 0; i < m; ++i) {
-        int u, v;
-        cin >> u >> v;
-        graph.addEdge(u, v);
+    int q;
+    cin >>q;
+    for (int j = 1; j <= q; j++){
+        int src, des;
+        cin >> src >> des;
+        if (dis[src][des] == INF)cout <<"-1"<<endl;
+        else cout << dis[src][des] <<endl;
     }
-
-    int q; // Number of queries
-    cin >> q;
-
-    for (int i = 0; i < q; ++i) {
-        int source, destination;
-        cin >> source >> destination;
-        int minDistance = graph.bfs(source, destination);
-        cout << "Minimum distance from " << source << " to " << destination << ": " << minDistance << endl;
-    }
-
     return 0;
 }
+/*
+5
+7
+1 2 2
+1 3 6
+2 3 1
+3 4 4
+4 2 6
+2 5 3
+5 4 9
+*/

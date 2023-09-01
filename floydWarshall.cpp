@@ -1,35 +1,63 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-
-
-#define ll long long
-#define N 1000006
-#define SetBit(x, k) (x |= (1LL << k))
-#define ClearBit(x, k) (x &= ~(1LL << k))
-#define CheckBit(x, k) ((x>>k)&1)
-#define M 10000000007
-#define all(x) x.begin(), x.end()
-#define kill(x) return cout << x << endl, void();
-
-
-typedef pair<int, int>pii;
-
-int d[N][N]={N};
-
-void bellMan(int s){
-}
-
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    int n, m;
-    cin >> n >> m;
-
-    for(int i = 0; i < m; i++){
-        int u, v, w;
-        cin >> u >> v >> w;
-        d[u][v] = w;
-        d[v][u] = w;
+const int INF = 1e7;
+int main()
+{
+    int n, e;
+    cin >> n >> e;
+    int dis[n + 1][n + 1];
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            dis[i][j] = INF;
+            if (i == j)
+                dis[i][j] = 0;
+        }
+    }
+    while (e--)
+    {
+        int a, b, w;
+        cin >> a >> b >> w;
+        dis[a][b] = w;
+    }
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (dis[i][j] == INF)
+                cout << "INF"
+                     << " ";
+            else
+                cout << dis[i][j] << " ";
+        }
+        cout << endl;
+    }
+    for (int k = 1; k <= n; k++)
+    {
+        for (int i = 1; i <= n; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                if (dis[i][k] + dis[k][j] < dis[i][j])
+                {
+                    dis[i][j] = dis[i][k] + dis[k][j];
+                }
+            }
+        }
+    }
+    cout << "Updated" << endl;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (dis[i][j] == INF)
+                cout << "INF"
+                     << " ";
+            else
+                cout << dis[i][j] << " ";
+        }
+        cout << endl;
     }
     return 0;
 }
